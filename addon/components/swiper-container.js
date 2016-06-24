@@ -59,6 +59,22 @@ export default Ember.Component.extend({
     if (this.get('grabCursor')) {
       options.grabCursor = true;
     }
+    
+    if (this.get('breakpoints')) {
+      options.breakpoints = this.get('breakpoints');
+    }
+
+    if (this.get('autoplay')) {
+      options.autoplay = this.get('autoplay');
+    }
+
+    if (this.get('autoplayStopOnLast')) {
+      options.autoplayStopOnLast = this.get('autoplayStopOnLast');
+    }
+
+    if (this.get('autoplayDisableOnInteraction')) {
+      options.autoplayDisableOnInteraction = this.get('autoplayDisableOnInteraction');
+    }
 
     options.onSlideChangeEnd = this.slideChanged.bind(this);
 
@@ -100,11 +116,9 @@ export default Ember.Component.extend({
     });
   }),
 
-  initSwiper: Ember.on('init', function() {
-    Ember.run.later(this, () => {
-      this.set('swiper', new Swiper(`#${this.get('elementId')}`, this.get('swiperOptions')));
-      this.set('registerAs', this);
-    });
+  initSwiper: Ember.on('didInsertElement', function() {
+    this.set('swiper', new Swiper(`#${this.get('elementId')}`, this.get('swiperOptions')));
+    this.set('registerAs', this);
   })
 
 });

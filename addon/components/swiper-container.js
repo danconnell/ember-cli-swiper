@@ -6,7 +6,7 @@ export default Ember.Component.extend({
   classNames: ['swiper-container'],
   swiper: false,
 
-  swiperOptions: Ember.computed('pagination', 'loop', 'vertical', 'onlyExternal', function() {
+  swiperOptions: Ember.computed('pagination', 'loop', 'vertical', function() {
     let options = {};
 
     if (this.get('pagination')) {
@@ -30,11 +30,6 @@ export default Ember.Component.extend({
     // disables swipping
     if (this.get('followFinger')) {
       options.followFinger = false;
-    }
-    
-    // disable all user interactions
-    if (this.get('onlyExternal')) {
-      options.onlyExternal = true;
     }
 
     if (this.get('vertical')) {
@@ -64,7 +59,7 @@ export default Ember.Component.extend({
     if (this.get('grabCursor')) {
       options.grabCursor = true;
     }
-    
+
     if (this.get('breakpoints')) {
       options.breakpoints = this.get('breakpoints');
     }
@@ -122,8 +117,9 @@ export default Ember.Component.extend({
   }),
 
   initSwiper: Ember.on('didInsertElement', function() {
-    this.set('swiper', new Swiper(`#${this.get('elementId')}`, this.get('swiperOptions')));
-    this.set('registerAs', this);
+    Ember.run.scheduleOnce('afterRender', this, function() {
+      this.set('swiper', new Swiper(`#${this.get('elementId')}`, this.get('swiperOptions')));
+      this.set('registerAs', this);
+    });
   })
-
 });

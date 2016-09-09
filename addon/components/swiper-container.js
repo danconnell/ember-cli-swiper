@@ -6,7 +6,7 @@ export default Ember.Component.extend({
   classNames: ['swiper-container'],
   swiper: false,
 
-  swiperOptions: Ember.computed('pagination', 'loop', 'vertical', function() {
+  swiperOptions: Ember.computed('pagination', 'loop', 'vertical', 'onlyExternal', function() {
     let options = {};
 
     if (this.get('pagination')) {
@@ -31,7 +31,12 @@ export default Ember.Component.extend({
     if (this.get('followFinger')) {
       options.followFinger = false;
     }
-
+    
+    // disable all user interactions
+    if (this.get('onlyExternal')) {
+      options.onlyExternal = true;
+    }
+    
     if (this.get('vertical')) {
       options.direction = 'vertical';
     }
